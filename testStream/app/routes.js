@@ -1,4 +1,4 @@
-//var Todo = require('./models/todo');
+
 var http = require('http');
 var https= require('https');
 var responseTwitch = "";
@@ -14,23 +14,52 @@ var options = {
 };
 
 
+var MongoClient = require('mongodb').MongoClient;
+var assert = require('assert');
+var ObjectId = require('mongodb').ObjectID;
+var url = 'mongodb://127.0.0.1:27017/local';
+
+
+var insertDocument = function(db, IP, callback) {
+	var dt = new Date();
+		var utcDate = dt.toUTCString();
+   db.collection('logs').insertOne( {
+      "IP" : IP,
+	  "timeStamp": utcDate
+   }, function(err, result) {
+    assert.equal(err, null);
+    console.log("Inserted a document into the logs collection.");
+    callback();
+  });
+};
+
+
+
 module.exports = function(app) {
 
 	// get all streams
 	app.get('/api/streams', function(req, res) {
+
 		https.get(options,function(response){
 			var body = '';
 			response.on('data', function(chunk){
 				body += chunk;
 			});
-			
+
 			response.on('end', function(){
 				responseTwitch = JSON.parse(body);
 				res.json(responseTwitch);
 				//console.log("Got a response: ", responseTwitch);
 			});
 		});
-
+		MongoClient.connect(url, function(err, db) {
+		  assert.equal(null, err);
+		  console.log("Request IP: " + req.connection.remoteAddress);
+		  var IP = req.connection.remoteAddress;
+		  insertDocument(db,IP, function() {
+			  db.close();
+		  });
+		});
 	});
 
 	// get filter streams
@@ -49,7 +78,7 @@ module.exports = function(app) {
 			response.on('data', function(chunk){
 				body += chunk;
 			});
-			
+
 			response.on('end', function(){
 				responseTwitch = JSON.parse(body);
 				res.json(responseTwitch);
@@ -57,7 +86,6 @@ module.exports = function(app) {
 				options.path = "/kraken/streams";
 			});
 		});
-
 	});
 
 	// application -------------------------------------------------------------

@@ -28,11 +28,11 @@ table tr:nth-child(even) {
 <body ng-controller="mainController">
 	<div class="container">
 
-		
+
 		<div >
 			<h1>TOP STREAMERS ONLINE </h1>
 		</div>
-		<select 
+		<select
 			ng-model="selectedGame" ng-options="x for x in games">
 		</select>
 		<button ng-click=filterStreams()>Filter</button>
@@ -55,7 +55,7 @@ table tr:nth-child(even) {
 				<td>{{x.channel.views}}</td>
 				<td>{{x.channel.description}}</td>
 			</tr>
-		</table>		
+		</table>
 
 	</div>
 
