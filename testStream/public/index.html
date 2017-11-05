@@ -1,0 +1,68 @@
+<!doctype html>
+
+<!-- ASSIGN OUR ANGULAR MODULE -->
+<html ng-app="scotchTodo">
+<style>
+table, th , td  {
+  border: 1px solid grey;
+  border-collapse: collapse;
+  padding: 5px;
+}
+table tr:nth-child(odd) {
+  background-color: #f1f1f1;
+}
+table tr:nth-child(even) {
+  background-color: #ffffff;
+}
+</style>
+<head>
+	<!-- META -->
+	<meta charset="utf-8">
+
+	<title>Streamhatch test</title>
+
+	<!-- SCROLLS -->
+	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css"><!-- load bootstrap -->
+
+	<!-- SPELLS -->
+	<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.16/angular.min.js"></script><!-- load angular -->
+	<script src="core.js"></script>
+
+</head>
+<!-- SET THE CONTROLLER AND GET ALL TODOS WITH INITIALIZE FUNCTION -->
+<body ng-controller="mainController">
+	<div class="container">
+
+		<!-- HEADER AND TODO COUNT -->
+		<div >
+			<h1>TOP STREAMERS ONLINE </h1>
+		</div>
+		<select 
+			ng-model="selectedGame" ng-options="x for x in games">
+		</select>
+		<button ng-click=filterStreams()>Filter</button>
+		<table>
+			<tr>
+				<th> Game </th>
+				<th> viewers </th>
+				<th> Logo </th>
+				<th> Name </th>
+				<th> Language </th>
+				<th> Views </th>
+				<th> Description </th>
+			</tr>
+			<tr ng-repeat="x in streamers">
+				<td>{{ x.game }}</td>
+				<td>{{ x.viewers }}</td>
+				<td><img src="{{x.channel.logo}}" width="50px" height ="50px"></td>
+				<td>{{x.channel.display_name}}</td>
+				<td>{{x.channel.language}}</td>
+				<td>{{x.channel.views}}</td>
+				<td>{{x.channel.description}}</td>
+			</tr>
+		</table>		
+
+	</div>
+
+</body>
+</html>
