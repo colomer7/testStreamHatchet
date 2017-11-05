@@ -16,14 +16,12 @@ var options = {
 
 module.exports = function(app) {
 
-	// api ---------------------------------------------------------------------
 	// get all streams
 	app.get('/api/streams', function(req, res) {
 		https.get(options,function(response){
 			var body = '';
 			response.on('data', function(chunk){
 				body += chunk;
-						//res.json(body);
 			});
 			
 			response.on('end', function(){
@@ -50,15 +48,13 @@ module.exports = function(app) {
 			var body = '';
 			response.on('data', function(chunk){
 				body += chunk;
-						//res.json(body);
 			});
 			
 			response.on('end', function(){
 				responseTwitch = JSON.parse(body);
 				res.json(responseTwitch);
-				console.log("Got a response: ", responseTwitch);
+				//console.log("Got a response: ", responseTwitch);
 				options.path = "/kraken/streams";
-				console.log(options.path);
 			});
 		});
 
